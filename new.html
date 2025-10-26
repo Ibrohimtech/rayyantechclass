@@ -1,0 +1,732 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Rahhyantech — after-school coding classes for kids and teenagers. Learn, create and innovate with hands-on projects." />
+  <title>Rahhyantech — After-School Coding Classes</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root{
+      --brand-blue:#0ea5e9; /* sky-500 */
+      --accent:#f59e0b; /* amber-500 */
+    }
+    html { scroll-behavior: smooth }
+
+    /* custom animations */
+    @keyframes float { 0% { transform: translateY(0) } 50% { transform: translateY(-8px) } 100%{ transform: translateY(0) }}
+    .float { animation: float 4s ease-in-out infinite }
+
+    @keyframes fade-in-up { from { opacity:0; transform: translateY(10px)} to {opacity:1; transform: translateY(0)} }
+    .fade-in-up { animation: fade-in-up 0.6s ease forwards }
+
+    /* testimonial rotation (simple) */
+    .testi-slide { display: none }
+    .testi-slide.active { display: block }
+
+    /* fixed header transparency on scroll */
+    .header-shadow { backdrop-filter: blur(6px); background-color: rgba(255,255,255,0.7)}
+
+    /* helpful small screens */
+    @media (max-width:640px){ .hide-sm{ display:none } }
+  </style>
+</head>
+<body class="font-inter text-slate-800 antialiased">
+
+  <!-- HEADER (fixed) -->
+  <header id="site-header" class="fixed top-0 left-0 right-0 z-40 transition-shadow duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="#home" class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--brand-blue)] to-indigo-600 flex items-center justify-center text-white font-bold">R</div>
+          <div class="hidden sm:block">
+            <h1 class="text-lg font-poppins font-semibold">Rahhyantech</h1>
+            <p class="text-xs text-slate-600 -mt-1">After-school coding for kids</p>
+          </div>
+        </a>
+
+        <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
+          <a href="#programs" class="hover:text-[var(--brand-blue)]">Programs</a>
+          <a href="#courses" class="hover:text-[var(--brand-blue)]">Courses</a>
+          <a href="#about" class="hover:text-[var(--brand-blue)]">About</a>
+          <a href="#gallery" class="hover:text-[var(--brand-blue)]">Gallery</a>
+          <a href="#contact" class="hover:text-[var(--brand-blue)]">Contact</a>
+        </nav>
+
+        <div class="flex items-center gap-3">
+          <button id="trialBtn" data-course="" data-price="" class="hidden md:inline-flex items-center gap-2 bg-[var(--brand-blue)] hover:brightness-95 text-white px-4 py-2 rounded-lg shadow-md" data-book-class>
+            Book Class
+          </button>
+
+          <button id="mobile-open" class="md:hidden p-2 rounded-md focus:outline-none" aria-label="Open menu">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- mobile menu -->
+    <div id="mobileMenu" class="md:hidden hidden px-4 pb-4">
+      <div class="flex flex-col gap-3">
+        <a href="#programs" class="block">Programs</a>
+        <a href="#courses" class="block">Courses</a>
+        <a href="#about" class="block">About</a>
+        <a href="#gallery" class="block">Gallery</a>
+        <a href="#contact" class="block">Contact</a>
+        <button id="trialBtnMob" class="mt-2 bg-[var(--brand-blue)] text-white px-4 py-2 rounded-lg">Book Class</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="pt-24">
+
+    <!-- HERO -->
+    <section id="home" class="relative overflow-hidden">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center py-20">
+          <div class="space-y-6">
+            <p class="inline-flex items-center gap-2 text-sm font-medium rounded-full px-3 py-1 bg-yellow-100 text-yellow-800 w-max">New cohorts • Limited seats</p>
+            <h2 class="text-4xl sm:text-5xl font-extrabold tracking-tight">Building Tomorrow’s Coders, Today</h2>
+            <p class="text-lg text-slate-600">Rahhyantech offers after-school coding classes for kids and teenagers — hands-on projects, friendly instructors, and a creative learning path from Scratch to Python & Robotics.</p>
+
+            <div class="flex gap-3">
+              <a href="#contact" class="inline-flex items-center gap-2 bg-[var(--brand-blue)] text-white px-5 py-3 rounded-lg font-medium shadow hover:brightness-95">Join Our Coding Classes</a>
+              <button id="watchBtn" class="inline-flex items-center gap-2 border border-slate-200 px-5 py-3 rounded-lg">Watch Demo</button>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6">
+              <div class="p-3 bg-white rounded-lg shadow-sm text-center">
+                <strong class="block">8–10</strong>
+                <span class="text-xs text-slate-500">Scratch</span>
+              </div>
+              <div class="p-3 bg-white rounded-lg shadow-sm text-center">
+                <strong class="block">11–13</strong>
+                <span class="text-xs text-slate-500">Web Dev</span>
+              </div>
+              <div class="p-3 bg-white rounded-lg shadow-sm text-center">
+                <strong class="block">14–18</strong>
+                <span class="text-xs text-slate-500">Python</span>
+              </div>
+              <div class="p-3 bg-white rounded-lg shadow-sm text-center">
+                <strong class="block">10–16</strong>
+                <span class="text-xs text-slate-500">Robotics</span>
+              </div>
+            </div>
+
+            <div class="mt-6 flex gap-3 items-center">
+              <div class="text-sm">
+                <p class="font-medium">Trusted by parents</p>
+                <p class="text-xs text-slate-500">Over 1200+ students taught</p>
+              </div>
+              <div class="hidden sm:flex items-center gap-2 ml-4">
+                <img alt="student" src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=400&auto=format&fit=crop&ixlib=rb-4.0.3&s=1" class="w-10 h-10 rounded-full object-cover border-2 border-white float" />
+                <img alt="student" src="https://images.unsplash.com/photo-1584697964154-3a1c5ef3b3d1?q=80&w=400&auto=format&fit=crop&ixlib=rb-4.0.3&s=2" class="w-10 h-10 rounded-full object-cover border-2 border-white float" />
+                <img alt="student" src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=400&auto=format&fit=crop&ixlib=rb-4.0.3&s=3" class="w-10 h-10 rounded-full object-cover border-2 border-white float" />
+              </div>
+            </div>
+          </div>
+
+          <!-- right hero card -->
+          <div class="relative">
+            <div class="rounded-2xl p-6 bg-gradient-to-br from-white to-slate-50 shadow-lg">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 class="font-semibold">This week’s spotlight</h3>
+                  <p class="text-sm text-slate-500">Junior Robotics — Saturday cohort</p>
+                </div>
+                <div class="text-right">
+                  <p class="text-xl font-bold">Open</p>
+                  <p class="text-xs text-slate-500">Seats: 6</p>
+                </div>
+              </div>
+
+              <div class="mt-6 grid grid-cols-2 gap-3">
+                <div class="p-3 bg-white rounded-lg shadow-sm">
+                  <p class="text-xs text-slate-500">Age</p>
+                  <p class="font-medium">10–14</p>
+                </div>
+                <div class="p-3 bg-white rounded-lg shadow-sm">
+                  <p class="text-xs text-slate-500">Duration</p>
+                  <p class="font-medium">10 weeks</p>
+                </div>
+              </div>
+
+              <div class="mt-6">
+                <div class="h-44 bg-[var(--brand-blue)] rounded-lg relative overflow-hidden">
+                  <svg class="absolute right-2 bottom-2 w-32 opacity-20" viewBox="0 0 200 200"><rect width="200" height="200" rx="24" fill="white"/></svg>
+                </div>
+                <div class="mt-4 flex gap-3 items-center">
+                  <button class="flex-1 bg-white py-2 rounded-lg font-medium">View Course</button>
+                  <button class="book-now bg-[var(--accent)] text-white px-4 py-2 rounded-lg" data-course="Junior Robotics" data-price="₦35,000">Book Class</button>
+                </div>
+              </div>
+            </div>
+            <div class="absolute -right-6 -bottom-6 w-40 h-40 rounded-full border-4 border-white shadow-lg opacity-90 bg-gradient-to-br from-indigo-200 to-[var(--brand-blue)]"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- decorative shapes -->
+      <svg class="absolute right-6 top-6 opacity-20 w-48" viewBox="0 0 200 200"><circle cx="100" cy="100" r="80" fill="#7dd3fc"/></svg>
+    </section>
+
+    <!-- PROGRAMS -->
+    <section id="programs" class="py-16 bg-gradient-to-b from-white to-slate-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-10">
+          <h3 class="text-lg font-semibold">Our Programs</h3>
+          <p class="text-slate-500 mt-2">Hands-on, project-based learning for every age group</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <!-- Program card -->
+          <div class="p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all">
+            <div class="w-12 h-12 rounded-lg bg-indigo-50 flex items-center justify-center mb-3">🧩</div>
+            <h4 class="font-semibold">Scratch for Kids</h4>
+            <p class="text-sm text-slate-500 mt-2">Block-based coding to spark creativity (Ages 8–10)</p>
+            <div class="mt-4 flex items-center justify-between">
+              <span class="text-xs text-slate-500">8 weeks</span>
+              <div class="text-right">
+                <div class="text-sm font-bold">₦10,000</div>
+                <button class="text-sm text-[var(--brand-blue)] book-now" data-course="Scratch for Kids" data-price="₦10,000" data-book-class>Book Class →</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all">
+            <div class="w-12 h-12 rounded-lg bg-indigo-50 flex items-center justify-center mb-3">💻</div>
+            <h4 class="font-semibold">Web Development</h4>
+            <p class="text-sm text-slate-500 mt-2">HTML, CSS & JavaScript projects (Ages 11–14)</p>
+            <div class="mt-4 flex items-center justify-between">
+              <span class="text-xs text-slate-500">12 weeks</span>
+              <div class="text-right">
+                <div class="text-sm font-bold">₦18,000</div>
+                <button class="text-sm text-[var(--brand-blue)] book-now" data-course="Web Development" data-price="₦18,000" data-book-class>Book Class →</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all">
+            <div class="w-12 h-12 rounded-lg bg-indigo-50 flex items-center justify-center mb-3">🤖</div>
+            <h4 class="font-semibold">Robotics</h4>
+            <p class="text-sm text-slate-500 mt-2">Hands-on building & coding with microcontrollers (Ages 10–16)</p>
+            <div class="mt-4 flex items-center justify-between">
+              <span class="text-xs text-slate-500">10 weeks</span>
+              <div class="text-right">
+                <div class="text-sm font-bold">₦35,000</div>
+                <button class="text-sm text-[var(--brand-blue)] book-now" data-course="Robotics" data-price="₦35,000" data-book-class>Book Class →</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all">
+            <div class="w-12 h-12 rounded-lg bg-indigo-50 flex items-center justify-center mb-3">🐍</div>
+            <h4 class="font-semibold">Python Basics</h4>
+            <p class="text-sm text-slate-500 mt-2">Intro to text-based programming and games (Ages 14–18)</p>
+            <div class="mt-4 flex items-center justify-between">
+              <span class="text-xs text-slate-500">12 weeks</span>
+              <div class="text-right">
+                <div class="text-sm font-bold">₦20,000</div>
+                <button class="text-sm text-[var(--brand-blue)] book-now" data-course="Python Basics" data-price="₦20,000" data-book-class>Book Class →</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COURSES (detailed) -->
+    <section id="courses" class="py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between mb-8">
+          <div>
+            <h3 class="text-2xl font-semibold">Courses</h3>
+            <p class="text-slate-500">Pick a course and enroll — classes available after school and on weekends.</p>
+          </div>
+          <div class="hidden sm:block">
+            <label class="text-xs text-slate-500">Filter by age</label>
+            <div class="mt-1 inline-flex gap-2">
+              <button class="px-3 py-1 rounded-lg border text-sm">8–10</button>
+              <button class="px-3 py-1 rounded-lg border text-sm">11–13</button>
+              <button class="px-3 py-1 rounded-lg border text-sm">14–18</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Course card -->
+          <article class="p-6 bg-white rounded-2xl shadow-sm">
+            <h4 class="font-semibold">Intro to Web Development</h4>
+            <p class="text-sm text-slate-500 mt-2">Build your first website using HTML, CSS, and JavaScript. Project: Personal portfolio website.</p>
+            <div class="mt-4 flex items-center justify-between">
+              <div class="text-xs text-slate-500">Ages 11–14 • 12 weeks</div>
+              <div class="flex gap-2 items-center">
+                <div class="text-sm font-bold">₦18,000</div>
+                <button class="text-sm bg-[var(--brand-blue)] text-white px-3 py-1 rounded-lg book-now" data-course="Intro to Web Development" data-price="₦18,000" data-book-class>Book Class</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="p-6 bg-white rounded-2xl shadow-sm">
+            <h4 class="font-semibold">Scratch Game Design</h4>
+            <p class="text-sm text-slate-500 mt-2">Create interactive stories and games with block coding.</p>
+            <div class="mt-4 flex items-center justify-between">
+              <div class="text-xs text-slate-500">Ages 8–10 • 8 weeks</div>
+              <div class="flex gap-2 items-center">
+                <div class="text-sm font-bold">₦10,000</div>
+                <button class="text-sm bg-[var(--brand-blue)] text-white px-3 py-1 rounded-lg book-now" data-course="Scratch Game Design" data-price="₦10,000" data-book-class>Book Class</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="p-6 bg-white rounded-2xl shadow-sm">
+            <h4 class="font-semibold">Python for Beginners</h4>
+            <p class="text-sm text-slate-500 mt-2">Learn Python basics by making fun projects and small games.</p>
+            <div class="mt-4 flex items-center justify-between">
+              <div class="text-xs text-slate-500">Ages 14–18 • 12 weeks</div>
+              <div class="flex gap-2 items-center">
+                <div class="text-sm font-bold">₦20,000</div>
+                <button class="text-sm bg-[var(--brand-blue)] text-white px-3 py-1 rounded-lg book-now" data-course="Python for Beginners" data-price="₦20,000" data-book-class>Book Class</button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section id="testimonials" class="py-16 bg-gradient-to-b from-slate-50 to-white">
+      <div class="max-w-4xl mx-auto px-4 text-center">
+        <h3 class="text-2xl font-semibold">What parents & students say</h3>
+        <p class="text-slate-500 mt-2">Real stories from our community</p>
+
+        <div class="mt-8 relative">
+          <div id="testi1" class="testi-slide active p-6 bg-white rounded-2xl shadow">
+            <p class="text-slate-700">“My daughter built her first website after 6 weeks. The instructors are patient and encouraging.”</p>
+            <p class="mt-4 font-medium">— Aisha K., Parent</p>
+          </div>
+          <div id="testi2" class="testi-slide p-6 bg-white rounded-2xl shadow">
+            <p class="text-slate-700">“Fun classes and great projects. My son loves robotics day!”</p>
+            <p class="mt-4 font-medium">— Daniel O., Parent</p>
+          </div>
+
+          <div class="flex gap-3 justify-center mt-4">
+            <button onclick="showTesti(1)" class="w-3 h-3 rounded-full bg-slate-300"></button>
+            <button onclick="showTesti(2)" class="w-3 h-3 rounded-full bg-slate-300"></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section id="gallery" class="py-16">
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="text-center mb-8">
+          <h3 class="text-2xl font-semibold">Gallery & Events</h3>
+          <p class="text-slate-500 mt-2">Photos from classes, workshops and student projects</p>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+          <!-- placeholders — replace with real images -->
+          <img alt="gallery" src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=800&auto=format&fit=crop" class="w-full h-48 object-cover rounded-lg shadow-sm" />
+          <img alt="gallery" src="https://images.unsplash.com/photo-1584697964154-3a1c5ef3b3d1?q=80&w=800&auto=format&fit=crop" class="w-full h-48 object-cover rounded-lg shadow-sm" />
+          <img alt="gallery" src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=800&auto=format&fit=crop" class="w-full h-48 object-cover rounded-lg shadow-sm" />
+          <img alt="gallery" src="https://images.unsplash.com/photo-1588702547923-7093a6c3ba33?q=80&w=800&auto=format&fit=crop" class="w-full h-48 object-cover rounded-lg shadow-sm" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="py-16 bg-gradient-to-b from-white to-slate-50">
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+          <div>
+            <h3 class="text-2xl font-semibold">About Rahhyantech</h3>
+            <p class="text-slate-500 mt-2">Rahhyantech was founded to make tech education accessible and fun. We believe coding helps kids think creatively and solve problems—skills they’ll carry for life.</p>
+
+            <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="p-4 bg-white rounded-lg shadow-sm">
+                <h4 class="font-semibold">Mission</h4>
+                <p class="text-sm text-slate-500">Empower kids with practical coding skills through project-based learning.</p>
+              </div>
+              <div class="p-4 bg-white rounded-lg shadow-sm">
+                <h4 class="font-semibold">Vision</h4>
+                <p class="text-sm text-slate-500">Create a new generation of confident creators who use tech responsibly.</p>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h4 class="text-lg font-semibold">Meet the instructors</h4>
+            <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="p-4 bg-white rounded-lg shadow-sm flex gap-3 items-center">
+                <img src="https://images.unsplash.com/photo-1544723795-3fb6469f5b39?q=80&w=200&auto=format&fit=crop" class="w-14 h-14 rounded-full object-cover" alt="Instructor" />
+                <div>
+                  <p class="font-medium">Mr. Ade</p>
+                  <p class="text-xs text-slate-500">Lead Instructor — Web & Robotics</p>
+                </div>
+              </div>
+
+              <div class="p-4 bg-white rounded-lg shadow-sm flex gap-3 items-center">
+                <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=200&auto=format&fit=crop" class="w-14 h-14 rounded-full object-cover" alt="Instructor" />
+                <div>
+                  <p class="font-medium">Ms. Zainab</p>
+                  <p class="text-xs text-slate-500">Scratch & Junior Coding</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT / REGISTER -->
+    <section id="contact" class="py-16">
+      <div class="max-w-4xl mx-auto px-4">
+        <div class="text-center mb-6">
+          <h3 class="text-2xl font-semibold">Contact & Book a Free Trial</h3>
+          <p class="text-slate-500">Have questions? Want to book a class? Send us a message or use WhatsApp.</p>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow p-6">
+          <form id="contactForm" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <input name="name" required placeholder="Full name" class="col-span-1 sm:col-span-1 p-3 rounded-lg border" />
+            <input name="email" type="email" required placeholder="Email" class="col-span-1 sm:col-span-1 p-3 rounded-lg border" />
+            <input name="phone" placeholder="Phone (WhatsApp)" class="col-span-1 sm:col-span-1 p-3 rounded-lg border" />
+            <select name="course" class="col-span-1 sm:col-span-1 p-3 rounded-lg border">
+              <option>Choose course</option>
+              <option>Scratch</option>
+              <option>Web Development</option>
+              <option>Robotics</option>
+              <option>Python</option>
+            </select>
+            <textarea name="message" rows="4" placeholder="Message" class="col-span-1 sm:col-span-2 p-3 rounded-lg border"></textarea>
+
+            <div class="col-span-1 sm:col-span-2 flex items-center justify-between">
+              <div class="flex gap-3">
+                <button type="submit" class="bg-[var(--brand-blue)] px-4 py-2 rounded-lg text-white">Send message</button>
+              </div>
+
+              <div class="text-sm text-slate-500">
+                Or reach us on WhatsApp
+                <a href="https://wa.me/" target="_blank" class="ml-2 text-[var(--brand-blue)]">Chat now →</a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-slate-900 text-white py-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div>
+        <h4 class="font-semibold text-lg">Rahhyantech</h4>
+        <p class="text-sm text-slate-300 mt-2">After-school coding classes for kids & teens. Learn. Create. Innovate.</p>
+      </div>
+      <div>
+        <h5 class="font-medium">Quick Links</h5>
+        <ul class="mt-3 space-y-2 text-sm text-slate-300">
+          <li><a href="#courses">Courses</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5 class="font-medium">Contact</h5>
+        <p class="text-sm text-slate-300 mt-3">hello@rahhyantech.com</p>
+        <div class="mt-3 flex gap-3">
+          <a aria-label="facebook" href="#" class="text-slate-300">FB</a>
+          <a aria-label="instagram" href="#" class="text-slate-300">IG</a>
+          <a aria-label="twitter" href="#" class="text-slate-300">X</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal: Book Class -->
+  <div id="bookingModal"class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50" method="POST">
+    <div class="bg-white rounded-2xl p-6 w-full max-w-md">
+      <div class="flex items-center justify-between">
+        <h4 id="modalTitle" class="font-semibold">Book Class</h4>
+        <button id="closeModal" class="text-slate-500">✕</button>
+      </div>
+      <div class="mt-3 text-sm text-slate-700 bg-slate-50 p-3 rounded-md">
+        <p><strong>Payment Details</strong></p>
+        <p>Bank/Platform: <strong>Opay</strong></p>
+        <p>Account Name: <strong>Jimoh Ibrahim Taiwo</strong></p>
+        <p>Account Number: <strong>707296312</strong></p>
+        <p class="text-xs text-slate-500 mt-1">Please send the course fee to the account above, then upload your payment receipt below to complete booking.</p>
+      </div>
+        <form id="bookingForm" class="space-y-4" enctype="multipart/form-data" method="POST">
+        <input type="text" id="name" name="name" placeholder="Your Name" required class="w-full border rounded p-2">
+        <input type="email" id="email" name="email" placeholder="Your Email" required class="w-full border rounded p-2">
+        <input type="text" id="courseName" name="course" readonly class="w-full border rounded p-2">
+        <input type="text" id="coursePrice" name="price" readonly class="w-full border rounded p-2">
+        <label class="block text-sm font-semibold">Upload Payment Receipt (required)</label>
+        <input type="file" id="receipt" name="receipt" accept="image/*,application/pdf" required class="w-full border rounded p-2">
+        <textarea id="message" name="message" placeholder="Additional Message" class="w-full border rounded p-2"></textarea>
+        <button type="submit" class="bg-blue-600 text-white w-full py-2 rounded hover:bg-blue-700 transition">Submit Booking</button>
+        </form>
+
+      
+
+      <p class="mt-3 text-xs text-slate-500">Note: the form will only submit if a receipt file is uploaded. Payments should be sent to the Opay account above.</p>
+    </div>
+  </div>
+
+  <script>
+    // header shadow on scroll
+    const header = document.getElementById('site-header');
+    window.addEventListener('scroll', () => {
+      if(window.scrollY > 10) header.classList.add('header-shadow'); else header.classList.remove('header-shadow');
+    });
+
+    // mobile menu toggle
+    const mobileOpen = document.getElementById('mobile-open');
+    const mobileMenu = document.getElementById('mobileMenu');
+    mobileOpen.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+
+    // modal logic
+    const modal = document.getElementById('modal');
+    const trialBtn = document.getElementById('trialBtn');
+    const trialBtnMob = document.getElementById('trialBtnMob');
+    const closeModal = document.getElementById('closeModal');
+    const cancelTrial = document.getElementById('cancelTrial');
+    const bookNowButtons = document.querySelectorAll('.book-now');
+    const courseField = document.getElementById('courseField');
+    const priceField = document.getElementById('priceField');
+    const receiptInput = document.getElementById('receipt');
+
+    function openModalFor(course, price){
+      courseField.value = course || '';
+      priceField.value = price || '';
+      modal.classList.remove('hidden');
+    }
+
+    // attach click to every Book Class button
+    bookNowButtons.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const course = btn.getAttribute('data-course') || btn.dataset.course || 'Course';
+        const price = btn.getAttribute('data-price') || btn.dataset.price || '';
+        openModalFor(course, price);
+      });
+    });
+
+    // Also main header trial button opens modal (blank by default)
+    if(trialBtn) trialBtn.addEventListener('click', () => openModalFor('', ''));
+    if(trialBtnMob) trialBtnMob.addEventListener('click', () => openModalFor('', ''));
+
+    [closeModal, cancelTrial].forEach(b => { if(b) b.addEventListener('click', () => modal.classList.add('hidden')) });
+
+    // ENFORCE receipt required and send to email using Formspree (recommended) or fallback mailto
+    const trialForm = document.getElementById('trialForm');
+
+    // Replace with your Formspree endpoint if you want form posting + file attachments sent to Gmail automatically.
+    // Example: const FORM_ENDPOINT = 'https://formspree.io/f/mayxyzab';
+    const FORM_ENDPOINT = 'https://formspree.io/f/xldodnan';
+
+    trialForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Check receipt
+      if(!receiptInput.files || receiptInput.files.length === 0){
+        alert('Please upload your payment receipt before submitting.');
+        return;
+      }
+
+      // Prepare form data
+      const fd = new FormData(trialForm);
+
+      // Add a note with payment account info to the form data
+      fd.append('Payment Account', 'Opay - Jimoh Ibrahim Taiwo - 707296312');
+
+      // If a Formspree endpoint is set, POST there (Formspree can forward to your Gmail)
+      if(FORM_ENDPOINT){
+        try{
+          const res = await fetch(FORM_ENDPOINT, { method: 'POST', body: fd });
+          if(res.ok){
+            alert('Booking submitted — we will contact you shortly.');
+            trialForm.reset();
+            modal.classList.add('hidden');
+            return;
+          } else {
+            console.error('Formspree error', res.statusText);
+            alert('There was an error sending the form. Falling back to email.');
+          }
+        }catch(err){
+          console.error(err);
+          alert('Error sending form. Falling back to email.');
+        }
+      }
+
+      // Fallback: open mail client with form details (note: file cannot be attached via mailto)
+      // We will instruct the user to attach the receipt manually in the email if using fallback.
+      const formValues = {};
+      new FormData(trialForm).forEach((v,k) => formValues[k] = v);
+
+      const subject = encodeURIComponent('Rahhyantech Class Booking — ' + (formValues.course || '')); 
+      let body = '';
+      Object.keys(formValues).forEach(k => { body += `${k}: ${formValues[k]}
+`; });
+      body += '
+Payment Account: Opay - Jimoh Ibrahim Taiwo - 707296312
+';
+      body += '
+***IMPORTANT***: Please attach your payment receipt to this email before sending. The website could not attach it automatically.
+';
+
+      const mailto = `mailto:hello@rahhyantech.com?subject=${subject}&body=${encodeURIComponent(body)}`;
+      window.location.href = mailto;
+
+      // after redirect user will send mail manually; still reset form locally
+      trialForm.reset();
+      modal.classList.add('hidden');
+    });
+
+    // simple testimonial switch
+    function showTesti(n){ document.querySelectorAll('.testi-slide').forEach((el,i)=>{ el.classList.remove('active'); }); document.getElementById('testi'+n).classList.add('active'); }
+
+    // demo: handle contact form (replace with real API)
+    document.getElementById('contactForm').addEventListener('submit', (e)=>{ e.preventDefault(); alert('Message sent — we will reach out soon.'); e.target.reset(); });
+  </script>
+  <script>
+  // Modal elements
+  const bookButtons = document.querySelectorAll('[data-book-class]');
+  const modal = document.getElementById('bookingModal');
+  const closeModal = document.getElementById('closeModal');
+  const courseNameInput = document.getElementById('courseName');
+  const coursePriceInput = document.getElementById('coursePrice');
+
+  // Open modal when "Book Class" button is clicked
+  bookButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const course = button.getAttribute('data-course');
+      const price = button.getAttribute('data-price');
+      if (courseNameInput) courseNameInput.value = course || '';
+      if (coursePriceInput) coursePriceInput.value = price || '';
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    });
+  });
+
+  // Close modal
+  closeModal.addEventListener('click', () => {
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+  });
+
+  // Close modal when clicking outside of it
+  window.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+  });
+</script>
+<script>
+  // ====== CONFIG ======
+  const FORM_ENDPOINT = 'https://formspree.io/f/xldodnan'; // <- paste your real Formspree URL here
+
+  // ====== UI ELEMENTS ======
+  const bookButtons = document.querySelectorAll('[data-book-class]');
+  const modal = document.getElementById('bookingModal');
+  const closeModal = document.getElementById('closeModal');
+  const bookingForm = document.getElementById('bookingForm');
+  const courseNameInput = document.getElementById('courseName');
+  const coursePriceInput = document.getElementById('coursePrice');
+  const receiptInput = document.getElementById('receipt');
+
+  // Open modal and prefill
+  bookButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const course = button.getAttribute('data-course') || '';
+      const price = button.getAttribute('data-price') || '';
+      courseNameInput.value = course;
+      coursePriceInput.value = price;
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    });
+  });
+
+  // Close modal
+  closeModal.addEventListener('click', () => {
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+  });
+
+  // Click outside to close
+  window.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+  });
+
+  // Submission handler
+  bookingForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // Client-side receipt check
+    if (!receiptInput.files || receiptInput.files.length === 0) {
+      alert('Please upload your payment receipt before submitting.');
+      return;
+    }
+
+    // Build FormData from the form (includes file)
+    const fd = new FormData(bookingForm);
+    // append your payment instruction (optional)
+    fd.append('Payment Account', 'Opay - Jimoh Ibrahim Taiwo - 707296312');
+
+    // If FORM_ENDPOINT is set, POST to it (Formspree)
+    if (FORM_ENDPOINT && FORM_ENDPOINT.includes('formspree')) {
+      try {
+        const resp = await fetch(FORM_ENDPOINT, {
+          method: 'POST',
+          body: fd,
+          // Do NOT set headers; let browser set multipart boundary automatically
+        });
+        // Formspree returns 200/202 on success — check ok
+        if (resp.ok) {
+          alert('Booking submitted successfully! We will contact you shortly.');
+          bookingForm.reset();
+          modal.classList.add('hidden');
+        } else {
+          const text = await resp.text();
+          console.error('Formspree response not OK:', resp.status, text);
+          alert('Form submitted but server returned an error. Check console for details.');
+        }
+      } catch (err) {
+        console.error('Error POSTing to Formspree:', err);
+        alert('Error sending form to server. See console for details.');
+      }
+      return;
+    }
+
+    // FALLBACK: mailto (cannot attach file automatically) — only used if FORM_ENDPOINT not configured
+    const name = encodeURIComponent(document.getElementById('name').value);
+    const email = encodeURIComponent(document.getElementById('email').value);
+    const course = encodeURIComponent(courseNameInput.value);
+    const price = encodeURIComponent(coursePriceInput.value);
+    const subject = encodeURIComponent(`Rahhyantech Booking: ${course}`);
+    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nCourse: ${course}\nPrice: ${price}\nPayment Account: Opay - Jimoh Ibrahim Taiwo - 707296312\n\nIMPORTANT: Please attach the payment receipt file to this email before sending.`);
+
+    window.location.href = `mailto:ibrahimtaiwo377@gmail.com?subject=${subject}&body=${body}`;
+    bookingForm.reset();
+    modal.classList.add('hidden');
+  });
+</script>
+
+
+</body>
+</html>
