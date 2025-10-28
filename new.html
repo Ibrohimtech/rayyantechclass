@@ -468,7 +468,11 @@
         <p>Account Number: <strong>707296312</strong></p>
         <p class="text-xs text-slate-500 mt-1">Please send the course fee to the account above, then upload your payment receipt below to complete booking.</p>
       </div>
-        <form id="bookingForm" class="space-y-4" enctype="multipart/form-data" method="POST">
+        <form id="bookingForm"
+      action="https://formspree.io/f/xldodnan"
+      method="POST"
+      enctype="multipart/form-data"
+      class="space-y-4">
         <input type="text" id="name" name="name" placeholder="Your Name" required class="w-full border rounded p-2">
         <input type="email" id="email" name="email" placeholder="Your Email" required class="w-full border rounded p-2">
         <input type="text" id="courseName" name="course" readonly class="w-full border rounded p-2">
@@ -477,6 +481,10 @@
         <input type="file" id="receipt" name="receipt" accept="image/*,application/pdf" required class="w-full border rounded p-2">
         <textarea id="message" name="message" placeholder="Additional Message" class="w-full border rounded p-2"></textarea>
         <button type="submit" class="bg-blue-600 text-white w-full py-2 rounded hover:bg-blue-700 transition">Submit Booking</button>
+        <p id="formSuccess" class="hidden text-green-600 text-sm">
+          ✅ Your booking was sent successfully! We’ll contact you soon.
+        </p>
+
         </form>
 
       
@@ -486,246 +494,82 @@
   </div>
 
   <script>
-    // header shadow on scroll
-    const header = document.getElementById('site-header');
-    window.addEventListener('scroll', () => {
-      if(window.scrollY > 10) header.classList.add('header-shadow'); else header.classList.remove('header-shadow');
-    });
-
-    // mobile menu toggle
-    const mobileOpen = document.getElementById('mobile-open');
-    const mobileMenu = document.getElementById('mobileMenu');
-    mobileOpen.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
-
-    // modal logic
-    const modal = document.getElementById('modal');
-    const trialBtn = document.getElementById('trialBtn');
-    const trialBtnMob = document.getElementById('trialBtnMob');
-    const closeModal = document.getElementById('closeModal');
-    const cancelTrial = document.getElementById('cancelTrial');
-    const bookNowButtons = document.querySelectorAll('.book-now');
-    const courseField = document.getElementById('courseField');
-    const priceField = document.getElementById('priceField');
-    const receiptInput = document.getElementById('receipt');
-
-    function openModalFor(course, price){
-      courseField.value = course || '';
-      priceField.value = price || '';
-      modal.classList.remove('hidden');
-    }
-
-    // attach click to every Book Class button
-    bookNowButtons.forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const course = btn.getAttribute('data-course') || btn.dataset.course || 'Course';
-        const price = btn.getAttribute('data-price') || btn.dataset.price || '';
-        openModalFor(course, price);
-      });
-    });
-
-    // Also main header trial button opens modal (blank by default)
-    if(trialBtn) trialBtn.addEventListener('click', () => openModalFor('', ''));
-    if(trialBtnMob) trialBtnMob.addEventListener('click', () => openModalFor('', ''));
-
-    [closeModal, cancelTrial].forEach(b => { if(b) b.addEventListener('click', () => modal.classList.add('hidden')) });
-
-    // ENFORCE receipt required and send to email using Formspree (recommended) or fallback mailto
-    const trialForm = document.getElementById('trialForm');
-
-    // Replace with your Formspree endpoint if you want form posting + file attachments sent to Gmail automatically.
-    // Example: const FORM_ENDPOINT = 'https://formspree.io/f/mayxyzab';
-    const FORM_ENDPOINT = 'https://formspree.io/f/xldodnan';
-
-    trialForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      // Check receipt
-      if(!receiptInput.files || receiptInput.files.length === 0){
-        alert('Please upload your payment receipt before submitting.');
-        return;
-      }
-
-      // Prepare form data
-      const fd = new FormData(trialForm);
-
-      // Add a note with payment account info to the form data
-      fd.append('Payment Account', 'Opay - Jimoh Ibrahim Taiwo - 707296312');
-
-      // If a Formspree endpoint is set, POST there (Formspree can forward to your Gmail)
-      if(FORM_ENDPOINT){
-        try{
-          const res = await fetch(FORM_ENDPOINT, { method: 'POST', body: fd });
-          if(res.ok){
-            alert('Booking submitted — we will contact you shortly.');
-            trialForm.reset();
-            modal.classList.add('hidden');
-            return;
-          } else {
-            console.error('Formspree error', res.statusText);
-            alert('There was an error sending the form. Falling back to email.');
-          }
-        }catch(err){
-          console.error(err);
-          alert('Error sending form. Falling back to email.');
-        }
-      }
-
-      // Fallback: open mail client with form details (note: file cannot be attached via mailto)
-      // We will instruct the user to attach the receipt manually in the email if using fallback.
-      const formValues = {};
-      new FormData(trialForm).forEach((v,k) => formValues[k] = v);
-
-      const subject = encodeURIComponent('Rahhyantech Class Booking — ' + (formValues.course || '')); 
-      let body = '';
-      Object.keys(formValues).forEach(k => { body += `${k}: ${formValues[k]}
-`; });
-      body += '
-Payment Account: Opay - Jimoh Ibrahim Taiwo - 707296312
-';
-      body += '
-***IMPORTANT***: Please attach your payment receipt to this email before sending. The website could not attach it automatically.
-';
-
-      const mailto = `mailto:hello@rahhyantech.com?subject=${subject}&body=${encodeURIComponent(body)}`;
-      window.location.href = mailto;
-
-      // after redirect user will send mail manually; still reset form locally
-      trialForm.reset();
-      modal.classList.add('hidden');
-    });
-
-    // simple testimonial switch
-    function showTesti(n){ document.querySelectorAll('.testi-slide').forEach((el,i)=>{ el.classList.remove('active'); }); document.getElementById('testi'+n).classList.add('active'); }
-
-    // demo: handle contact form (replace with real API)
-    document.getElementById('contactForm').addEventListener('submit', (e)=>{ e.preventDefault(); alert('Message sent — we will reach out soon.'); e.target.reset(); });
-  </script>
-  <script>
-  // Modal elements
-  const bookButtons = document.querySelectorAll('[data-book-class]');
-  const modal = document.getElementById('bookingModal');
-  const closeModal = document.getElementById('closeModal');
-  const courseNameInput = document.getElementById('courseName');
-  const coursePriceInput = document.getElementById('coursePrice');
-
-  // Open modal when "Book Class" button is clicked
-  bookButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      const course = button.getAttribute('data-course');
-      const price = button.getAttribute('data-price');
-      if (courseNameInput) courseNameInput.value = course || '';
-      if (coursePriceInput) coursePriceInput.value = price || '';
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-    });
+  // header shadow on scroll
+  const header = document.getElementById('site-header');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 10) header.classList.add('header-shadow');
+    else header.classList.remove('header-shadow');
   });
 
-  // Close modal
-  closeModal.addEventListener('click', () => {
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
-  });
-
-  // Close modal when clicking outside of it
-  window.addEventListener('click', (e) => {
-    if (e.target === modal) {
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
-    }
-  });
+  // mobile menu toggle
+  const mobileOpen = document.getElementById('mobile-open');
+  const mobileMenu = document.getElementById('mobileMenu');
+  mobileOpen.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script>
-  // ====== CONFIG ======
-  const FORM_ENDPOINT = 'https://formspree.io/f/xldodnan'; // <- paste your real Formspree URL here
+(function() {
+  emailjs.init("OMpQAzxepT6MKks7m"); // 🔹 Replace with your EmailJS public key
+})();
 
-  // ====== UI ELEMENTS ======
-  const bookButtons = document.querySelectorAll('[data-book-class]');
-  const modal = document.getElementById('bookingModal');
-  const closeModal = document.getElementById('closeModal');
-  const bookingForm = document.getElementById('bookingForm');
-  const courseNameInput = document.getElementById('courseName');
-  const coursePriceInput = document.getElementById('coursePrice');
-  const receiptInput = document.getElementById('receipt');
+const modal = document.getElementById("bookingModal");
+const openBtns = document.querySelectorAll("[data-book-class]");
+const closeModal = document.getElementById("closeModal");
+const form = document.getElementById("bookingForm");
+const successMsg = document.getElementById("formSuccess");
 
-  // Open modal and prefill
-  bookButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      const course = button.getAttribute('data-course') || '';
-      const price = button.getAttribute('data-price') || '';
-      courseNameInput.value = course;
-      coursePriceInput.value = price;
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
+// Open modal when any "Book Class" button is clicked
+openBtns.forEach(btn => {
+  btn.addEventListener("click", () => {
+    const course = btn.dataset.course;
+    const price = btn.dataset.price;
+    document.getElementById("courseName").value = course;
+    document.getElementById("coursePrice").value = price;
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+  });
+});
+
+// Close modal
+closeModal.addEventListener("click", () => {
+  modal.classList.add("hidden");
+  modal.classList.remove("flex");
+});
+
+// Form submission
+form.addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  const receipt = document.getElementById("receipt").files[0];
+  if (!receipt) {
+    alert("Please upload your payment receipt before submitting.");
+    return;
+  }
+
+  // Prepare form data
+  const formData = {
+    name: document.getElementById("name").value,
+    email: document.getElementById("email").value,
+    course: document.getElementById("courseName").value,
+    price: document.getElementById("coursePrice").value,
+    message: document.getElementById("message").value
+  };
+
+  // Send email via EmailJS
+  emailjs.send("service_hdcb2gy", "template_aexkoqd", formData)
+    .then(function(response) {
+      successMsg.classList.remove("hidden");
+      form.reset();
+      console.log("SUCCESS!", response.status, response.text);
+    }, function(error) {
+      console.error("FAILED...", error);
+      alert("Something went wrong. Please try again later.");
     });
-  });
-
-  // Close modal
-  closeModal.addEventListener('click', () => {
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
-  });
-
-  // Click outside to close
-  window.addEventListener('click', (e) => {
-    if (e.target === modal) {
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
-    }
-  });
-
-  // Submission handler
-  bookingForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    // Client-side receipt check
-    if (!receiptInput.files || receiptInput.files.length === 0) {
-      alert('Please upload your payment receipt before submitting.');
-      return;
-    }
-
-    // Build FormData from the form (includes file)
-    const fd = new FormData(bookingForm);
-    // append your payment instruction (optional)
-    fd.append('Payment Account', 'Opay - Jimoh Ibrahim Taiwo - 707296312');
-
-    // If FORM_ENDPOINT is set, POST to it (Formspree)
-    if (FORM_ENDPOINT && FORM_ENDPOINT.includes('formspree')) {
-      try {
-        const resp = await fetch(FORM_ENDPOINT, {
-          method: 'POST',
-          body: fd,
-          // Do NOT set headers; let browser set multipart boundary automatically
-        });
-        // Formspree returns 200/202 on success — check ok
-        if (resp.ok) {
-          alert('Booking submitted successfully! We will contact you shortly.');
-          bookingForm.reset();
-          modal.classList.add('hidden');
-        } else {
-          const text = await resp.text();
-          console.error('Formspree response not OK:', resp.status, text);
-          alert('Form submitted but server returned an error. Check console for details.');
-        }
-      } catch (err) {
-        console.error('Error POSTing to Formspree:', err);
-        alert('Error sending form to server. See console for details.');
-      }
-      return;
-    }
-
-    // FALLBACK: mailto (cannot attach file automatically) — only used if FORM_ENDPOINT not configured
-    const name = encodeURIComponent(document.getElementById('name').value);
-    const email = encodeURIComponent(document.getElementById('email').value);
-    const course = encodeURIComponent(courseNameInput.value);
-    const price = encodeURIComponent(coursePriceInput.value);
-    const subject = encodeURIComponent(`Rahhyantech Booking: ${course}`);
-    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nCourse: ${course}\nPrice: ${price}\nPayment Account: Opay - Jimoh Ibrahim Taiwo - 707296312\n\nIMPORTANT: Please attach the payment receipt file to this email before sending.`);
-
-    window.location.href = `mailto:ibrahimtaiwo377@gmail.com?subject=${subject}&body=${body}`;
-    bookingForm.reset();
-    modal.classList.add('hidden');
-  });
+});
 </script>
+
+
 
 
 </body>
